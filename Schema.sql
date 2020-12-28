@@ -29,14 +29,14 @@ CREATE TABLE IF NOT EXISTS `tags` (
 CREATE TABLE IF NOT EXISTS `products_tags` (
   `_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT UNSIGNED NOT NULL,
-  `tags_id` INT UNSIGNED NOT NULL,
+  `tag_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY `_id`
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `customers` (
   `_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `phone` VARCHAR(17) NOT NULL,
-  `country_code` INT UNSIGNED NOT NULL,
+  `phone_code_id` INT UNSIGNED NOT NULL,
   `title` enum('kak', 'bapak', 'ibu') DEFAULT 'kak',
   `name` VARCHAR(128) NOT NULL,
   UNIQUE `phone`,
@@ -52,3 +52,25 @@ CREATE TABLE IF NOT EXISTS `phone_code` (
 ) ENGINE=InnoDB;
 
 ALTER TABLE `products`
+  ADD CONSTRAINT 'FK_products_brands'
+    FOREIGN KEY (`brand_id`) REFERENCES `brands`(`_id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE;
+
+ALTER TABLE `products_tags`
+  ADD CONSTRAINT `FK_product_tag`
+    FOREIGN KEY (`product_id`) REFERENCES `products`(`_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE;
+
+ALTER TABLE `products_tags`
+  ADD CONSTRAINT `FK_tag_product`
+    FOREIGN KEY (`tag_id`) REFERENCES `tags`(`_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE;
+
+ALTER TABLE `customers`
+  ADD CONSTRAINT `FK_customer_phone_code`
+    FOREIGN KEY (`phone_code_id`) REFERENCES `phone_code`(`_id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE;
