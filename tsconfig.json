@@ -1,0 +1,16 @@
+{
+  "extends": "@tsconfig/node14/tsconfig.json",
+
+  "noImplicitAny": false,
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "baseUrl": "./src"
+  },
+  "exclude": [
+    "./dist/**/*",
+    "./node_modules/**/*",
+    "./log/**/*",
+    "./test/"
+  ]
+}
