@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `brand_id` INT UNSIGNED NULL,
   `description` VARCHAR(255) NOT NULL,
   `prize` DOUBLE(8,2) NOT NULL CHECK (`prize` > 0),
+  `added_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB;
 
@@ -41,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
   `phone_code_id` INT UNSIGNED NULL,
   `title` enum('kak', 'bapak', 'ibu') DEFAULT 'kak',
   `name` VARCHAR(128) NOT NULL,
+  `join_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE (`phone`),
   PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB;
