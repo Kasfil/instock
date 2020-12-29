@@ -1,0 +1,80 @@
+openapi: 3.0.2
+info:
+  title: Belanja Main API
+  version: 1.0.0
+  description: API spesification for belanja application, Restricted resources. FOR INTERNAL USAGE ONLY!
+  termsOfService: https://api.belanja.com/terms/api-resources
+  contact:
+    name: Belanja Dev Team
+    email: developer@belanja.com
+  license:
+    name: Proprietary
+    url: https://api.belanja.com/license/api-resources
+servers:
+  - url: localhost:8765
+    description: Development phase of API endpoint
+  - url: https://staged.api.belanja.com/
+    description: Testing API endpoint
+  - url: https://api.belanja.com/v1
+    description: Production ready API endpoint
+components:
+  schemas:
+    GeneralError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    Success:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        data:
+          type: object
+    Trending:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+          title:
+            type: string
+          count:
+            type: integer
+            format: int32
+          prize:
+            type: number
+            format: double
+  responses:
+    NotFound:
+      description: product not found
+    InvalidInput:
+      description: input operation body invalid
+    GeneralError:
+      description: general request error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeneralError'
+    Success:
+      description: Success request response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Success'
+paths:
+  /trending:
+    get:
+      description: Return trending products within 3 days
+      responses:
+        '200':
+          description: Lists of trending products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trending'
