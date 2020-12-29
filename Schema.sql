@@ -2,45 +2,47 @@ CREATE DATABASE IF NOT EXISTS `belanja_core`
   CHARACTER SET = 'utf8mb4'
   COLLATE = 'utf8mb4_bin';
 
+USE `belanja_core`;
+
 CREATE TABLE IF NOT EXISTS `products` (
   `_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(255) NOT NULL,
-  `brand_id` INT UNSIGNED NOT NULL,
+  `brand_id` INT UNSIGNED NULL,
   `description` VARCHAR(255) NOT NULL,
-  `prize` DOUBLE(8,2) NOT NULL,
-  PRIMARY KEY `_id`
+  `prize` DOUBLE(8,2) NOT NULL CHECK (`prize` > 0),
+  PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `brands` (
   `_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `brand` VARCHAR(255) NOT NULL,
   `logo` VARCHAR(255) NULL,
-  UNIQUE `brand`,
-  PRIMARY KEY `_id`
+  UNIQUE (`brand`),
+  PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `tags` (
   `_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `tag` VARCHAR(32) NOT NULL,
-  UNIQUE `tag`,
-  PRIMARY KEY `_id`
+  UNIQUE (`tag`),
+  PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `products_tags` (
   `_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT UNSIGNED NOT NULL,
   `tag_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY `_id`
+  PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `customers` (
   `_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `phone` VARCHAR(17) NOT NULL,
-  `phone_code_id` INT UNSIGNED NOT NULL,
+  `phone_code_id` INT UNSIGNED NULL,
   `title` enum('kak', 'bapak', 'ibu') DEFAULT 'kak',
   `name` VARCHAR(128) NOT NULL,
-  UNIQUE `phone`,
-  PRIMARY KEY `_id`
+  UNIQUE (`phone`),
+  PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `phone_code` (
@@ -48,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `phone_code` (
   `code` TINYINT UNSIGNED NOT NULL,
   `country` VARCHAR(36) NOT NULL,
   UNIQUE (`code`, `country`),
-  PRIMARY KEY `_id`
+  PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `user_favorit` (
@@ -56,11 +58,11 @@ CREATE TABLE IF NOT EXISTS `user_favorit` (
   `user_id` INT UNSIGNED NOT NULL,
   `product_id` INT UNSIGNED NOT NULL,
   `added_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY `_id`
+  PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB;
 
 ALTER TABLE `products`
-  ADD CONSTRAINT 'FK_products_brands'
+  ADD CONSTRAINT `FK_products_brands`
     FOREIGN KEY (`brand_id`) REFERENCES `brands`(`_id`)
     ON DELETE SET NULL
     ON UPDATE CASCADE;
