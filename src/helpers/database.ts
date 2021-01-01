@@ -1,20 +1,49 @@
 import knex from 'knex'
-import configData from 'configs/config'
-import { connectionInterface } from '@intfc/databases'
-
-import type { ConfigValueType } from 'configs/config'
+import { connectionInterface } from 'interfaces/databases'
 
 class database {
-  private driver: string
-  private client: string
-  private user: string
-  private password: string
-  private database: string
-  private port: number
+  private connectionData: connectionInterface
 
-  constructor(name: string = 'default') {
-    const databaseConfig: ConfigValueType = configData.Databases
-    const connectionData: ConfigValueType = databaseConfig[name]
+  constructor(connectionData: connectionInterface) {
+    this.connectionData = connectionData
+  }
+
+  createConnection(): knex {
+    switch (this.connectionData.client) {
+      case 'mysql':
+        return this.knexMysql()
+      case 'sqlite':
+        return this.knexSqlite()
+      default:
+        throw new Error('Client unknown')
+    }
+  }
+
+  knexMysql(): knex {
+    const connData = this.connectionData
+    const instance = knex({
+      client: connData.client,
+      connection: {
+        host: connData.host,
+        user: connData.user,
+        password: connData.password,
+        database: connData.database
+      }
+    })
+
+    return instance
+  }
+
+  knexSqlite(): knex {
+    const connData = this.connectionData
+    const instance = knex({
+      client: connData.client,
+      connection: {
+        filename: '@dataPath/sqlite/' + connData.filename
+      }
+    })
+
+    return instance
   }
 }
 
