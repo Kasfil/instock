@@ -5,7 +5,12 @@
   "compilerOptions": {
     "resolveJsonModule": true,
     "outDir": "dist",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "paths": {
+      "@dataPath": [
+        "./local_db"
+      ]
+    }
   },
   "exclude": [
     "./dist/**/*",
