@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `title` VARCHAR(255) NOT NULL,
   `brand_id` INT UNSIGNED NULL,
   `description` VARCHAR(255) NOT NULL,
+  `stock` INT UNSIGNED NOT NULL DEFAULT 0,
   `prize` DOUBLE(8,2) NOT NULL CHECK (`prize` > 0),
   `added_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`_id`)
