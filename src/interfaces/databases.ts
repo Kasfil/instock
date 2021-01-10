@@ -6,5 +6,6 @@ export interface connectionInterface {
   host?: string,
   port?: number,
   charset?: string,
-  timezone?: string
+  timezone?: string,
+  filename?: string
 }
