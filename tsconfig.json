@@ -7,9 +7,13 @@
     "outDir": "dist",
     "baseUrl": "./src",
     "paths": {
-      "@dataPath": [
-        "./local_db"
-      ]
+      "@dataPath": ["./local_db"],
+      "@action": ["./src/actions"],
+      "@app": ["./src/app"],
+      "@common": ["./src/common"],
+      "@config": ["./src/configs"],
+      "@interface": ["./src/interfaces"],
+      "@route": ["./src/routes"]
     }
   },
   "exclude": [
