@@ -1,8 +1,31 @@
-CREATE DATABASE IF NOT EXISTS `belanja_core`
+CREATE DATABASE IF NOT EXISTS `instock`
   CHARACTER SET = 'utf8mb4'
   COLLATE = 'utf8mb4_bin';
 
-USE `belanja_core`;
+USE `instock`;
+
+CREATE TABLE IF NOT EXISTS `admins` (
+  `_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(64) NOT NULL,
+  UNIQUE (`email`),
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `roles` (
+  `_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `role` VARCHAR(64) NOT NULL,
+  `description` VARCHAR(255) NULL,
+  UNIQUE (`role`),
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `admin_role` (
+  `_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `admin_id` INT UNSIGNED NOT NULL,
+  `role_id` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `products` (
   `_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -56,13 +79,25 @@ CREATE TABLE IF NOT EXISTS `phone_code` (
   PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS `user_favorit` (
+CREATE TABLE IF NOT EXISTS `customer_favorit` (
   `_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` INT UNSIGNED NOT NULL,
+  `customer_id` INT UNSIGNED NOT NULL,
   `product_id` INT UNSIGNED NOT NULL,
   `added_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB;
+
+ALTER TABLE `admin_role`
+  ADD CONSTRAINT `FK_admin_role`
+    FOREIGN KEY (`admin_id`) REFERENCES `admins`(`_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE;
+
+ALTER TABLE `admin_role`
+  ADD CONSTRAINT `FK_role_admin`
+    FOREIGN KEY (`role_id`) REFERENCES `roles`(`_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE;
 
 ALTER TABLE `products`
   ADD CONSTRAINT `FK_products_brands`
@@ -88,13 +123,13 @@ ALTER TABLE `customers`
     ON DELETE SET NULL
     ON UPDATE CASCADE;
 
-ALTER TABLE `user_favorit`
+ALTER TABLE `customer_favorit`
   ADD CONSTRAINT `FK_user_favorit`
-    FOREIGN KEY (`user_id`) REFERENCES `users`(`_id`)
+    FOREIGN KEY (`customer_id`) REFERENCES `customers`(`_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
 
-ALTER TABLE `user_favorit`
+ALTER TABLE `customer_favorit`
   ADD CONSTRAINT `FK_favorit_user`
     FOREIGN KEY (`product_id`) REFERENCES `products`(`_id`)
     ON DELETE CASCADE
